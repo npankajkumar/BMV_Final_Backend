@@ -7,7 +7,11 @@ namespace Backend.Services
 {
     public class ProvidersService : IProvidersService
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        public ProvidersService(BmvContext bmvContext)
+        {
+            _bmvContext = bmvContext;
+        }
         public List<Provider> GetAllProviders()
         {
             try

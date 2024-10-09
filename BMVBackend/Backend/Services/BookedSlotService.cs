@@ -6,7 +6,13 @@ namespace Backend.Services
 {
     public class BookedSlotService
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        public BookedSlotService(BmvContext bmvContext)
+        {
+            _bmvContext = bmvContext;
+        }
+
+
         public List<BookedSlot> GetAllBookedSlots()
         {
             return _bmvContext.BookedSlots.ToList();

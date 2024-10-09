@@ -4,7 +4,11 @@ namespace Backend.Services
 {
     public class CategoryService
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        public CategoryService(BmvContext bmvContext)
+        {
+            _bmvContext = bmvContext;
+        }
         public List<Category> GetAllCategories()
         {
             return _bmvContext.Categories.ToList();

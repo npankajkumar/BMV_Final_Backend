@@ -8,10 +8,15 @@ namespace Backend.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
+        private readonly BmvContext _bmvContext;
+
+        public CategoryController(BmvContext bmvContext) {
+            _bmvContext = bmvContext;
+        }
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var cService = new CategoryService();
+            var cService = new CategoryService(_bmvContext);
             var c = cService.GetCategoryById(id);
             return Ok(c);
         }

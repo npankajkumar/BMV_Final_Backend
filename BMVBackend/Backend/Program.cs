@@ -2,6 +2,7 @@ using Backend.Controllers;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -28,6 +29,9 @@ namespace Backend
             builder.Services.AddScoped<ICustomersService, CustomersService>();
             builder.Services.AddScoped<IVenuesService, VenuesService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddDbContext<BmvContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

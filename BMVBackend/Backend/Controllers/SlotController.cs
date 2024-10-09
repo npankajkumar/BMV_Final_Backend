@@ -12,9 +12,12 @@ namespace Backend.Controllers
     public class SlotController : ControllerBase
     {
         SlotService _service;
-        public SlotController()
+        private readonly BmvContext _bmvContext;
+        public SlotController(BmvContext bmvContext)
         {
-            _service = new SlotService();
+            _bmvContext = bmvContext;
+            _service = new SlotService(_bmvContext);
+
         }
         // GET: api/<SlotController>
         [HttpGet]

@@ -7,7 +7,11 @@ namespace Backend.Services
 {
     public class BookingService : IBookingService
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        public BookingService(BmvContext bmvContext)
+        {
+            _bmvContext = bmvContext;
+        }
         public List<Booking> GetAllBookings()
         {
             return _bmvContext.Bookings.Include("BookedSlots").ToList();

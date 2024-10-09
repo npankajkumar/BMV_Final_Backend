@@ -72,15 +72,16 @@ namespace Backend.Controllers
         [Authorize]
         public IActionResult Post([FromBody] BookingDTO value)
         {
-            var customerId = User.Claims.FirstOrDefault(c => c.Type == "CustomerId")?.Value;
 
-            if (customerId == null)
+            var customerEmail = User.Claims.FirstOrDefault(c => c.Type == "emails")?.Value;
+            Customer c = _customerService.GetCustomerByEmail(customerEmail);
+            if (c == null)
             {
                 Console.WriteLine("null customer");
                 return BadRequest();
             }
 
-            var b = _service.AddBooking(Convert.ToInt32(customerId), value);
+            var b = _service.AddBooking(c.Id, value);
             if (b == null)
             {
                 return BadRequest();

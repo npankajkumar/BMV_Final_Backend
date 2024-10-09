@@ -9,7 +9,11 @@ namespace Backend.Services
 {
     public class VenuesService : IVenuesService
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        public VenuesService(BmvContext bmvContext)
+        {
+            _bmvContext = bmvContext;
+        }
         public List<Venue> GetAllVenues()
         {
             return _bmvContext.Venues.ToList();

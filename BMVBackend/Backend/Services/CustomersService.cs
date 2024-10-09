@@ -6,7 +6,11 @@ namespace Backend.Services
 {
     public class CustomersService : ICustomersService
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        public CustomersService(BmvContext bmvContext)
+        {
+            _bmvContext = bmvContext;
+        }
         public List<Customer> GetAllCustomers()
         {
             List<Customer> users;

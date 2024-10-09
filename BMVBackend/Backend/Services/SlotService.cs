@@ -6,7 +6,11 @@ namespace Backend.Services
 {
     public class SlotService
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        public SlotService(BmvContext bmvContext)
+        {
+            _bmvContext = bmvContext;
+        }
         public List<Slot> GetAllSlots()
         {
             return _bmvContext.Slots.ToList();

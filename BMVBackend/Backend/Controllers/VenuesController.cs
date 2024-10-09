@@ -16,10 +16,12 @@ namespace Backend.Controllers
     {
         IVenuesService _service;
         IProvidersService _providersService;
-        public VenuesController(IVenuesService service,IProvidersService providersService)
+        private readonly BmvContext _bmvContext;
+        public VenuesController(IVenuesService service,IProvidersService providersService, BmvContext bmvContext)
         {
             _service = service;
             _providersService = providersService;
+            _bmvContext = bmvContext;
         }
 
         // GET: api/<VenueController>
@@ -60,7 +62,7 @@ namespace Backend.Controllers
             {
                 return NotFound();
             }
-            var cservice = new CategoryService();
+            var cservice = new CategoryService(_bmvContext);
             var cName = cservice.GetCategoryById(v.CategoryId).Name;
             return Ok(v);
         }

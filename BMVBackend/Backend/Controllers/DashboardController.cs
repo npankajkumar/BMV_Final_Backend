@@ -10,10 +10,13 @@ namespace Backend.Controllers
     [ApiController]
     public class DashboardController : ControllerBase
     {
-        private readonly BmvContext _bmvContext = new BmvContext();
+        private readonly BmvContext _bmvContext;
+        
+        //private readonly BmvContext _bmvContext = new BmvContext();
         private readonly IProvidersService _providersService;
-        public DashboardController(IProvidersService providersService) {
+        public DashboardController(IProvidersService providersService,BmvContext bmvContext) {
             _providersService = providersService;
+            _bmvContext = bmvContext;
         }
 
         [HttpGet]
