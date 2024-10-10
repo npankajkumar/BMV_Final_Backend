@@ -42,8 +42,6 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-AuthController.cs
-appsettings.json
 
 # Migration
 Migrations/
