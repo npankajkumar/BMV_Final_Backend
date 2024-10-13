@@ -43,6 +43,5 @@ msbuild.err
 msbuild.wrn
 
 appsettings.json
-
 # Migration
 Migrations/
