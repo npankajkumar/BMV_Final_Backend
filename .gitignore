@@ -42,6 +42,6 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-appsettings.json
+Backend/appsettings.json
 # Migration
 Migrations/
