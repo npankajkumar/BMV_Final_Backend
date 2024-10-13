@@ -65,8 +65,8 @@ namespace Backend.Controllers
                         return Ok(new { id_token = idToken });
                     else
                     {
-                        //var Email = tokenS.Claims.First(claim => claim.Type == "emails").Value;
-                        var Name = tokenS.Claims.First(claim => claim.Type == "given_name").Value;
+                        
+                        var Name = tokenS.Claims.First(claim => claim.Type == "name").Value;
                         var Mobile = tokenS.Claims.First(claim => claim.Type == "extension_Mobile").Value;
                         var Email = tokenS.Claims.First(claim => claim.Type == "emails").Value;
                         Provider p = new Provider() { Email = Email, Mobile = Mobile, Name = Name };
