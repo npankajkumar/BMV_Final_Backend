@@ -1,8 +1,6 @@
 ﻿using Backend.DTO.Venue;
 using Backend.Helpers;
 using Backend.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.EntityFrameworkCore;
 
 namespace Backend.Services
@@ -90,7 +88,6 @@ namespace Backend.Services
                 c = new Category() { Name = venueWithSlotDetails.Category };
                 _bmvContext.Categories.Add(c);
             }
-            //c = _bmvContext.Categories.Where(c => c.Name == venueWithSlotDetails.Category).FirstOrDefault();
             try
             {
             _bmvContext.SaveChanges();
@@ -121,11 +118,7 @@ namespace Backend.Services
             {
                 return null;
             }
-            //try 
-            //{
-            //    HttpClient httpClient = new HttpClient();
-            //    httpClient.PostAsync("http://localhost:5143/api/Search", );
-            //} catch { }
+            
             return v;
         }
         public Venue UpdateVenue(int id, PutVenueDTO v)

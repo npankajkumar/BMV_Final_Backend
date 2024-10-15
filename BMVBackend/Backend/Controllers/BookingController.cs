@@ -13,12 +13,12 @@ namespace Backend.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        IBookingService _service;
-        ICustomersService _customerService;
-        IVenuesService _venueService;
-        IProvidersService _providerService;
+        INBookingService _service;
+        INCustomersService _customerService;
+        INVenuesService _venueService;
+        INProvidersService _providerService;
         ILogger _logger;
-        public BookingController(IBookingService bookingService, ICustomersService customerService, IVenuesService venueService, IProvidersService providerService, ILogger<BookingController> logger)
+        public BookingController(INBookingService bookingService, INCustomersService customerService, INVenuesService venueService, INProvidersService providerService, ILogger<BookingController> logger)
         {
             _service = bookingService;
             _customerService = customerService;
@@ -32,20 +32,16 @@ namespace Backend.Controllers
         public IActionResult Get()
         {
             _logger.LogInformation("Booking Log Information");
-            var customerEmail = User.Claims.FirstOrDefault(c => c.Type == "emails")?.Value;
-            var providerEmail = User.Claims.FirstOrDefault(c => c.Type == "emails")?.Value;
-            List<GetBookingDTO> bookings;
-            if(customerEmail != null)
+            var email = User.Claims.FirstOrDefault(c => c.Type == "emails")?.Value;
+            List<GetBookingDTO> bookings = new List<GetBookingDTO>();
+            if(email != null)
             {
-                Customer c = _customerService.GetCustomerByEmail(customerEmail);
-                bookings = _service.GetAllBookingsByCustomerId(c.Id);
-            }
-            else
-            {
-                Provider p = _providerService.GetProviderByEmail(providerEmail);
-                bookings = _service.GetAllBookingsByProviderId(p.Id);
-            }
+                Customer c = _customerService.GetCustomerByEmail(email);
 
+                bookings = _service.GetAllBookingsByCustomerId(c.Id);
+                Provider p = _providerService.GetProviderByEmail(email);
+                _service.GetAllBookingsByProviderId(p.Id).ForEach(b=>bookings.Add(b));
+            }
             var detailedBookings = bookings.Select(b => new
             {
                 b.Id,

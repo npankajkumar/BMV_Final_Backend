@@ -13,8 +13,8 @@ namespace Backend.Controllers
         private readonly BmvContext _bmvContext;
         
         //private readonly BmvContext _bmvContext = new BmvContext();
-        private readonly IProvidersService _providersService;
-        public DashboardController(IProvidersService providersService,BmvContext bmvContext) {
+        private readonly INProvidersService _providersService;
+        public DashboardController(INProvidersService providersService,BmvContext bmvContext) {
             _providersService = providersService;
             _bmvContext = bmvContext;
         }

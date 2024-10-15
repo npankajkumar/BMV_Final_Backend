@@ -13,8 +13,8 @@ namespace Backend.Controllers
     [ApiController]
     public class CustomersController : ControllerBase
     {
-        ICustomersService _service;
-        public CustomersController(ICustomersService usersService) 
+        INCustomersService _service;
+        public CustomersController(INCustomersService usersService) 
         {
             _service = usersService;
         }

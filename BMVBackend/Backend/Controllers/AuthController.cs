@@ -18,11 +18,11 @@ namespace Backend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly HttpClient _httpClient;
-        private readonly IProvidersService _providerService;
-        private readonly ICustomersService _customersService;
+        private readonly INProvidersService _providerService;
+        private readonly INCustomersService _customersService;
         private readonly IConfiguration _configuration;
 
-        public AuthController(HttpClient httpClient,  IProvidersService providerService, ICustomersService customersService, IConfiguration configuration)
+        public AuthController(HttpClient httpClient,  INProvidersService providerService, INCustomersService customersService, IConfiguration configuration)
         {
             _httpClient = httpClient;
             _providerService = providerService;

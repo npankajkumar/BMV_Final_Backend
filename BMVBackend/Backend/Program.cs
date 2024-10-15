@@ -1,4 +1,5 @@
 using Backend.Controllers;
+using Backend.Repositories;
 using Backend.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -29,6 +30,18 @@ namespace Backend
             builder.Services.AddScoped<ICustomersService, CustomersService>();
             builder.Services.AddScoped<IVenuesService, VenuesService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
+            builder.Services.AddScoped<INProvidersService, NProvidersService>();
+            builder.Services.AddScoped<IProviderRepository, ProviderRepository>();
+            builder.Services.AddScoped<INCustomersService, NCustomersService>();
+            builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
+            builder.Services.AddScoped<IVenueRepository,VenueRepository>();
+            builder.Services.AddScoped<INVenuesService, NVenuesService>();
+            builder.Services.AddScoped<INBookingService, NBookingService>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<INCategoryService, NCategoryService>();
+
+
             builder.Services.AddDbContext<BmvContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 

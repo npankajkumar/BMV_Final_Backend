@@ -14,10 +14,10 @@ namespace Backend.Controllers
     [ApiController]
     public class VenuesController : ControllerBase
     {
-        IVenuesService _service;
-        IProvidersService _providersService;
+        INVenuesService _service;
+        INProvidersService _providersService;
         private readonly BmvContext _bmvContext;
-        public VenuesController(IVenuesService service,IProvidersService providersService, BmvContext bmvContext)
+        public VenuesController(INVenuesService service,INProvidersService providersService, BmvContext bmvContext)
         {
             _service = service;
             _providersService = providersService;

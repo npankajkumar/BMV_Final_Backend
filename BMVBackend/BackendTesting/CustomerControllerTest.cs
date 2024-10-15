@@ -12,14 +12,14 @@ namespace BackendTesting
     [TestFixture]
     public class CustomerControllerTest
     {
-        Mock<ICustomersService> service;
+        Mock<INCustomersService> service;
         CustomersController controller;
         Customer customer;
         CustomerLoginDTO loginDto;
         PutCustomerDTO customerDto;
         [OneTimeSetUp]
         public void SetUp() { 
-            service = new Mock<ICustomersService>();
+            service = new Mock<INCustomersService>();
             controller = new CustomersController(service.Object);
             customer = new Customer { Id = 1, Name = "Niketh Donthula", Mobile = "1234567890", Email = "nikethdonthula@gmail.com" };
             loginDto = new CustomerLoginDTO

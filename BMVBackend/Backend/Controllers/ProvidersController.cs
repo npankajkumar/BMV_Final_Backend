@@ -13,8 +13,8 @@ namespace Backend.Controllers
     [ApiController]
     public class ProvidersController : ControllerBase
     {
-        IProvidersService _service;
-        public ProvidersController(IProvidersService providerService) {
+        private readonly INProvidersService _service;
+        public ProvidersController(INProvidersService providerService) {
             _service = providerService;
         }
         // GET: api/<ProviderController>
@@ -29,12 +29,12 @@ namespace Backend.Controllers
             {
                 return BadRequest();
             }
-            var provider = _service.GetProviderById(p.Id);
-            if(provider == null)
-            {
-                return BadRequest();
-            }
-            return Ok(provider);
+            //var provider = _service.GetProviderById(p.Id);
+            //if(provider == null)
+            //{
+            //    return BadRequest();
+            //}
+            return Ok(p);
         }
 
         // GET api/<ProviderController>/5

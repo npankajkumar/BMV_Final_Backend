@@ -13,7 +13,7 @@ namespace BackendTesting
     [TestFixture]
     public class ProviderControllerTest
     {
-        Mock<IProvidersService> service;
+        Mock<INProvidersService> service;
         ProvidersController controller;
         PostProviderDTO postProviderDto;
         PutProviderDTO putProviderDto;
@@ -22,7 +22,7 @@ namespace BackendTesting
         [OneTimeSetUp]
         public void SetUp()
         {
-            service = new Mock<IProvidersService>();
+            service = new Mock<INProvidersService>();
             controller = new ProvidersController(service.Object);
             provider = new Provider { Id = 1, Name = "Niketh Donthula", Mobile = "1234567890", Email = "nikethdonthula@gmail.com" };
             postProviderDto = new PostProviderDTO
