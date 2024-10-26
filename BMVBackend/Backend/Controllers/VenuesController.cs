@@ -92,18 +92,18 @@ namespace Backend.Controllers
             Provider p = _providersService.GetProviderByEmail(providerEmail);
             if (p == null)
             {
-                return BadRequest();
+                return BadRequest("Could not retrieve provider email from token");
             }
-            var cv = _service.GetVenueById(id);
-            if (cv == null || cv.ProviderId != p.Id) { 
-                return BadRequest();
-            }
+            //var cv = _service.GetVenueById(id);
+            //if (cv == null || cv.ProviderId != p.Id) { 
+            //    return BadRequest();
+            //}
             var uv = _service.UpdateVenue(id, v);
             if (uv != null)
             {
                 return Ok(uv);
             }
-            return NotFound();
+            return NotFound("Venue Not Found");
         }
 
         // DELETE api/<VenueController>/5

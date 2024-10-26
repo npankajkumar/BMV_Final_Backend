@@ -32,15 +32,19 @@ namespace Backend.Controllers
         public IActionResult Get()
         {
             _logger.LogInformation("Booking Log Information");
-            var email = User.Claims.FirstOrDefault(c => c.Type == "emails")?.Value;
-            List<GetBookingDTO> bookings = new List<GetBookingDTO>();
-            if(email != null)
+            var customerEmail = User.Claims.FirstOrDefault(c => c.Type == "emails")?.Value;
+            var providerEmail = User.Claims.FirstOrDefault(c => c.Type == "emails")?.Value;
+            var headerValue = Request.Headers["User"].ToString();
+            List<GetBookingDTO> bookings;
+            if (headerValue == "provider")
             {
-                Customer c = _customerService.GetCustomerByEmail(email);
-
+                Provider p = _providerService.GetProviderByEmail(providerEmail);
+                bookings = _service.GetAllBookingsByProviderId(p.Id);
+            }
+            else
+            {
+                Customer c = _customerService.GetCustomerByEmail(customerEmail);
                 bookings = _service.GetAllBookingsByCustomerId(c.Id);
-                Provider p = _providerService.GetProviderByEmail(email);
-                _service.GetAllBookingsByProviderId(p.Id).ForEach(b=>bookings.Add(b));
             }
             var detailedBookings = bookings.Select(b => new
             {

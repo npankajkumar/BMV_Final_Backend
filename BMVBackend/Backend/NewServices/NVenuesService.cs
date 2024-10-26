@@ -10,10 +10,11 @@ namespace Backend.Services
     public class NVenuesService : INVenuesService
     {
         private readonly IVenueRepository _venueRepository;
-
-        public NVenuesService(IVenueRepository venueRepository)
+        private readonly BmvContext _bmvContext;
+        public NVenuesService(IVenueRepository venueRepository, BmvContext bmvContext)
         {
             _venueRepository = venueRepository;
+            _bmvContext = bmvContext;
         }
 
         public List<Venue> GetAllVenues()
@@ -62,17 +63,15 @@ namespace Backend.Services
                 slots.Add(newSlot);
                 currentTime = endTime.AddMinutes(1);
             }
+            Venue venue = new Venue();
 
-            Venue venue = new Venue
-            {
-                Name = venueWithSlotDetails.Name,
-                Description = venueWithSlotDetails.Description,
-                Address = venueWithSlotDetails.Address,
-                City = venueWithSlotDetails.City,
-                Latitude = venueWithSlotDetails.Latitude,
-                Longitude = venueWithSlotDetails.Longitude,
-                ProviderId = providerId
-            };
+            venue.Name = venueWithSlotDetails.Name;
+            venue.Description = venueWithSlotDetails.Description;
+            venue.Address = venueWithSlotDetails.Address;
+            venue.City = venueWithSlotDetails.City;
+            venue.Latitude = venueWithSlotDetails.Latitude;
+            venue.Longitude = venueWithSlotDetails.Longitude;
+            venue.ProviderId = providerId;
 
             // Image processing and category logic
             List<string> images = new List<string>();
@@ -92,25 +91,43 @@ namespace Backend.Services
             }
 
             venue.Images = images;
-            var category = _venueRepository.GetCategoryByName(venueWithSlotDetails.Category) ?? new Category { Name = venueWithSlotDetails.Category };
-            _venueRepository.AddCategoryIfNotExist(category);
-
-            venue.CategoryId = category.Id;
-            _venueRepository.AddVenue(venue);
-
+            Category c = _bmvContext.Categories.Where(c => c.Name == venueWithSlotDetails.Category).FirstOrDefault();
+            if (c == null)
+            {
+                c = new Category() { Name = venueWithSlotDetails.Category };
+                _bmvContext.Categories.Add(c);
+            }
+            try
+            {
+                _bmvContext.SaveChanges();
+            }
+            catch
+            {
+                return null;
+            }
+            venue.CategoryId = c.Id;
+            _bmvContext.Venues.Add(venue);
+            try
+            {
+                _bmvContext.SaveChanges();
+            }
+            catch
+            {
+                return null;
+            }
             foreach (var slot in slots)
             {
-                _venueRepository.AddSlot(new Slot
-                {
-                    Start = slot.Start,
-                    End = slot.End,
-                    VenueId = venue.Id,
-                    WeekdayPrice = slot.WeekdayPrice,
-                    WeekendPrice = slot.WeekendPrice
-                });
+                _bmvContext.Slots.Add(new Slot() { Start = slot.Start, End = slot.End, VenueId = venue.Id, WeekdayPrice = slot.WeekdayPrice, WeekendPrice = slot.WeekendPrice });
+            }
+            try
+            {
+                _bmvContext.SaveChanges();
+            }
+            catch
+            {
+                return null;
             }
 
-            _venueRepository.SaveChanges();
             return venue;
         }
 
@@ -123,7 +140,11 @@ namespace Backend.Services
                 venue.Address = venueDTO.Address ?? venue.Address;
                 venue.Description = venueDTO.Description ?? venue.Description;
                 venue.Name = venueDTO.Name ?? venue.Name;
-                venue.Rating = venueDTO.Rating ?? venue.Rating;
+                if (venueDTO.Rating.HasValue)
+                {
+                    venue.RatingSum += venueDTO.Rating.Value;
+                    venue.RatingCount += 1;
+                }
                 venue.Latitude = venueDTO.Latitude ?? venue.Latitude;
                 venue.Longitude = venueDTO.Longitude ?? venue.Longitude;
 

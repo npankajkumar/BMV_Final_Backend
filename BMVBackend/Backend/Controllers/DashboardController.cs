@@ -33,7 +33,7 @@ namespace Backend.Controllers
             var bookings = _bmvContext.Bookings.Where(b=>b.ProviderId== p.Id).ToList();
             var totalEarnings = bookings.Sum(b => b.Amount);
             var totalBookings = bookings.Count();
-            var venues = _bmvContext.Venues.ToList();
+            var venues = _bmvContext.Venues.Where(v => v.ProviderId == p.Id).ToList();
             var ratingSum = venues.Sum(v => v.Rating);
             var overallRating = ratingSum/(venues.Count() < 1 ? 1: venues.Count());
             var recentBookings = bookings.OrderByDescending(b=>b.CreatedAt).Take(5);

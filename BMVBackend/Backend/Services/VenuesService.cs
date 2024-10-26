@@ -62,6 +62,9 @@ namespace Backend.Services
             v.Latitude = venueWithSlotDetails.Latitude;
             v.Longitude = venueWithSlotDetails.Longitude;
             v.ProviderId = id;
+
+
+
             List<string> images = new List<string>();
             string path = "../wwwroot/images/";
             if (!Directory.Exists(path))
@@ -131,7 +134,11 @@ namespace Backend.Services
                 uv.Description = v.Description == null ? uv.Address : v.Description;
                 uv.Name = v.Name == null ? uv.Name : v.Name;
                 Console.WriteLine("hi" + v.Rating.ToString());
-                uv.Rating = v.Rating == null ? uv.Rating : (float)v.Rating;
+                if (v.Rating.HasValue)
+                {
+                    uv.RatingSum += v.Rating.Value;
+                    uv.RatingCount += 1;
+                }
                 uv.Latitude = v.Latitude == null ? uv.Latitude : (float)uv.Latitude;
                 uv.Longitude = v.Longitude == null ? uv.Longitude : (float)uv.Longitude;
                 _bmvContext.SaveChanges();

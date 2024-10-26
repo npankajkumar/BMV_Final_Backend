@@ -46,6 +46,7 @@ namespace Backend.Repositories
         public void AddBooking(Booking booking)
         {
             _context.Bookings.Add(booking);
+            _context.SaveChanges();
         }
 
         public void AddBookedSlot(BookedSlot bookedSlot)

@@ -20,12 +20,32 @@ namespace Backend.Repositories
 
         public IQueryable<Venue> GetTopRatedVenues()
         {
-            return _context.Venues.OrderByDescending(v => v.Rating).Take(5).AsQueryable();
+            var topRatedVenues = _context.Venues
+        .Select(v => new
+        {
+            Venue = v,
+            AverageRating = v.RatingCount == 0 ? 0 : v.RatingSum / v.RatingCount 
+        })
+        .Where(v => v.AverageRating >= 4) 
+        .OrderByDescending(v => v.AverageRating) 
+        .Take(5) 
+        .Select(v => v.Venue)
+        .ToList();
+
+            return topRatedVenues.AsQueryable();
+        
         }
 
         public IQueryable<Venue> GetTopBookedVenues()
         {
-            return _context.Venues.Include(v => v.Bookings).OrderByDescending(v => v.Bookings.Count).Take(5).AsQueryable();
+            var topBookedVenues = _context.Venues
+                .Include(v => v.Bookings)
+                .Where(v => v.Bookings.Count > 5)
+                .OrderByDescending(v => v.Bookings.Count)
+                .Take(5)
+                .ToList();
+
+            return topBookedVenues.AsQueryable();
         }
 
         public Venue GetVenueById(int id)
@@ -48,7 +68,8 @@ namespace Backend.Repositories
 
         public void AddVenue(Venue venue)
         {
-            _context.Venues.Add(venue);
+            _context.Venues.Add(venue); 
+            _context.SaveChanges();
         }
 
         public void AddSlot(Slot slot)

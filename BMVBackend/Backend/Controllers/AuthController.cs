@@ -53,36 +53,40 @@ namespace Backend.Controllers
                 if (responseData != null && responseData.ContainsKey("id_token"))
                 {
                     string idToken = responseData["id_token"];
-                    var token = idToken;
-      
                     var handler = new JwtSecurityTokenHandler();
                     var jsonToken = handler.ReadToken(idToken);
                     var tokenS = jsonToken as JwtSecurityToken;
-                    var newUser = tokenS.Claims.FirstOrDefault(claim => claim.Type == "newUser");
 
-                        tokenS.Claims.ToList().ForEach(c=>Console.WriteLine(c));
-                    if (newUser == null)
-                        return Ok(new { id_token = idToken });
+                    var isForgotPasswordClaim = tokenS?.Claims.FirstOrDefault(claim => claim.Type == "isForgotPassword");
+                    bool isForgotPassword = isForgotPasswordClaim != null && isForgotPasswordClaim.Value == "true";
+
+                    var newUserClaim = tokenS?.Claims.FirstOrDefault(claim => claim.Type == "newUser");
+                    var email = tokenS?.Claims.FirstOrDefault(claim => claim.Type == "emails")?.Value;
+                    var mobile = tokenS?.Claims.FirstOrDefault(claim => claim.Type == "extension_Mobile")?.Value;
+                    var name = tokenS?.Claims.FirstOrDefault(claim => claim.Type == "name")?.Value;
+
+                    if (newUserClaim == null)
+                    {
+                        return Ok(new { id_token = idToken, isForgotPassword = isForgotPassword, email = email });
+                    }
                     else
                     {
-                        
-                        var Name = tokenS.Claims.First(claim => claim.Type == "name").Value;
-                        var Mobile = tokenS.Claims.First(claim => claim.Type == "extension_Mobile").Value;
-                        var Email = tokenS.Claims.First(claim => claim.Type == "emails").Value;
-                        Provider p = new Provider() { Email = Email, Mobile = Mobile, Name = Name };
-                        Customer c = new Customer() { Email = Email, Mobile = Mobile, Name = Name };
-                        _customersService.AddCustomer(c);
+                        Provider p = new Provider() { Email = email, Mobile = mobile, Name = name };
+                        Customer c = new Customer() { Email = email, Mobile = mobile, Name = name };
+
                         _providerService.AddProvider(p);
-                        
+                        _customersService.AddCustomer(c);
                     }
-                    return Ok(new {id_token = idToken });
+
+                    return Ok(new { id_token = idToken, isForgotPassword = isForgotPassword, email = email });
                 }
-                return Ok(content); 
+
+                return Ok(content);
             }
             else
             {
                 var errorContent = await response.Content.ReadAsStringAsync();
-                return StatusCode((int)response.StatusCode, errorContent); 
+                return StatusCode((int)response.StatusCode, errorContent);
             }
         }
 

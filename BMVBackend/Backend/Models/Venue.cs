@@ -10,7 +10,9 @@
         public string City { get; set; }
         public float Latitude { get; set; }
         public float Longitude { get; set; }
-        public float Rating { get; set; }
+        public float RatingSum { get; set; }
+        public int RatingCount { get; set; }
+        public float Rating => RatingCount == 0 ? 0 : RatingSum / RatingCount;
         public List<string> Images { get; set; }
         public int CategoryId {  get; set; }
         public int ProviderId { get; set; }

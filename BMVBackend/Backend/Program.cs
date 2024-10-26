@@ -25,7 +25,15 @@ namespace Backend
 
             // Add services to the container.
             builder.Services.AddControllers();
-            builder.Services.AddCors();
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", policy =>
+                {
+                    policy.AllowAnyMethod()
+                          .AllowAnyHeader()
+                          .AllowAnyOrigin();
+                });
+            });
             builder.Services.AddScoped<IProvidersService, ProvidersService>();
             builder.Services.AddScoped<ICustomersService, CustomersService>();
             builder.Services.AddScoped<IVenuesService, VenuesService>();
@@ -77,12 +85,7 @@ namespace Backend
             var app = builder.Build();
 
             // Configure CORS
-            app.UseCors(options =>
-            {
-                options.AllowAnyMethod();
-                options.AllowAnyHeader();
-                options.AllowAnyOrigin();
-            });
+            app.UseCors("AllowAll");
 
             app.UseStaticFiles();
 

@@ -146,10 +146,8 @@ namespace Backend.Services
             }
             catch
             {
-                Console.WriteLine("116");
                 return null;
             }
-            Console.WriteLine("148");
             return b;
         }
         public bool UpdateBooking(int id, Booking b)
