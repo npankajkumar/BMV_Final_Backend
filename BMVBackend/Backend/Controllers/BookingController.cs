@@ -61,6 +61,10 @@ namespace Backend.Controllers
                 b.BookedSlots,
                 CustomerName = _customerService.GetCustomerById(b.CustomerId)?.Name,
                 ProviderName = _providerService.GetProviderById(b.ProviderId)?.Name,
+                CustomerMobile = _customerService.GetCustomerById(b.CustomerId)?.Mobile,
+                ProviderMobile = _providerService.GetProviderById(b.ProviderId)?.Mobile,
+                CustomerEmail = _customerService.GetCustomerById(b.CustomerId)?.Email,
+                ProviderEmail = _providerService.GetProviderById(b.ProviderId)?.Email,
                 VenueName = _venueService.GetVenueById(b.VenueId)?.Name
             }).ToList();
 

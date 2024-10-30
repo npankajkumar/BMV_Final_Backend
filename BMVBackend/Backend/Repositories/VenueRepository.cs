@@ -50,7 +50,7 @@ namespace Backend.Repositories
 
         public Venue GetVenueById(int id)
         {
-            return _context.Venues.Find(id);
+            return _context.Venues.Include(v=>v.Bookings).FirstOrDefault(v=>v.Id==id);
         }
 
         public Category GetCategoryByName(string categoryName)

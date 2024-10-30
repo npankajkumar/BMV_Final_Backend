@@ -19,5 +19,12 @@ namespace Backend.Controllers
             var c = cService.GetCategoryById(id);
             return Ok(c);
         }
+        [HttpGet("all")]
+        public IActionResult Get()
+        {
+
+            var c = cService.GetAllCategories();
+            return Ok(c);
+        }
     }
 }

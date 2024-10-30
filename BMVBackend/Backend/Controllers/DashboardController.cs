@@ -35,7 +35,7 @@ namespace Backend.Controllers
             var totalBookings = bookings.Count();
             var venues = _bmvContext.Venues.Where(v => v.ProviderId == p.Id).ToList();
             var ratingSum = venues.Sum(v => v.Rating);
-            var overallRating = ratingSum/(venues.Count() < 1 ? 1: venues.Count());
+            var overallRating = Math.Round(ratingSum/(venues.Count() < 1 ? 1: venues.Count()), 1);
             var recentBookings = bookings.OrderByDescending(b=>b.CreatedAt).Take(5);
             var chartData = new ChartData(bookings);
             var today = DateOnly.FromDateTime(DateTime.Now);

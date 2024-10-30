@@ -19,7 +19,7 @@ namespace Backend
 
             // Configure Serilog
             var logger = new LoggerConfiguration()
-                .WriteTo.File("C:\\Users\\pulkit\\Desktop\\work\\Project\\backend\\BMVBackend\\Backend\\Logs\\Bookings.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.File("C:\\Users\\ksathvikreddy\\BMV_Final_Backend\\BMVBackend\\Backend\\Logs\\Bookings.txt", rollingInterval: RollingInterval.Day)
                 .CreateLogger();
             builder.Host.UseSerilog(logger);
 
